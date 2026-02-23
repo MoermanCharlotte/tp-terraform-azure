@@ -1,0 +1,67 @@
+Étape 1 : Initialisation projet Terraform
+
+Ce que j'ai fait :
+- Ouverture de Cloud Shell
+- Création du dossier tp-terraform-azure
+- Initialisation de Git
+- Création de main.tf avec le provider Azure
+
+Ce que j'ai compris :
+- Terraform est déjà installé dans Cloud Shell
+
+Difficultés rencontrées :
+- Choix du compte de stockage et réseau virtuel privé
+
+Étape 2 : Création Resource Group pour VM
+
+Ce que j'ai fait :
+- Ajout d'un Resource Group avec Terraform
+- Définition du nom rg-tp-vm et de la région France Central
+
+Ce que j'ai compris :
+- Un Resource Group regroupe toutes les ressources Azure (VM, réseaux, disques)
+- Terraform va gérer ce groupe et les ressources qu'on créera dedans
+
+Difficultés rencontrées :
+- Choisir une région proche et peu coûteuse
+
+Étape 3 : Création des deux VM
+
+Ce que j'ai fait :
+- Création d’un Virtual Network et d’un Subnet pour les VM
+- Création de deux Network Interfaces (NIC) pour les deux VM
+- Création de deux VM Linux Ubuntu 18.04 Standard_B1s
+- Configuration de l’authentification SSH avec ma clé publique
+
+Ce que j'ai compris :
+- Chaque VM a besoin d’une interface réseau pour communiquer
+- Terraform gère toutes les dépendances automatiquement (subnet, NIC, VM)
+- Choisir Standard_B1s permet de réduire les coûts avec mon compte étudiant
+
+Difficultés rencontrées :
+- Bien relier NIC et subnet
+- Comprendre la structure Terraform pour VM + réseau
+
+Étape 4 : Terraform Plan et Apply (Création des VM)
+
+- Objectif : Créer deux VM Linux dans Azure avec Terraform.
+- Commandes utilisées :
+    terraform init        # Initialisation du projet Terraform
+    terraform plan        # Vérification du plan de déploiement
+    terraform apply       # Application pour créer les ressources
+
+- Difficultés rencontrées :
+    1. Erreur initiale avec la clé SSH :
+       - Terraform ne trouvait pas le fichier "~/.ssh/id_rsa.pub".
+       - Résolution : création des clés SSH avec `ssh-keygen -t rsa -b 2048 -f ~/.ssh/id_rsa -N ""`.
+    2. Le plan bloquait parfois avec l’enregistrement automatique des Resource Providers.
+       - Solution temporaire : retirer ou ne pas utiliser `resource_provider_registrations` dans le provider.
+    3. Attente longue pendant l’application (`terraform apply`) car les VM prennent du temps à se créer.
+       - Il faut juste patienter, c’est normal.
+
+- Ce que j’ai appris :
+    - Comment Terraform définit et planifie les ressources avant de les créer (`plan`).
+    - Comment appliquer un plan Terraform (`apply`) et surveiller la création des ressources.
+    - L’importance de la clé SSH pour accéder aux VM Linux.
+    - Que les VM Azure peuvent prendre du temps à se créer (il faut être patient).
+    - Comment identifier et résoudre des erreurs communes avec Terraform et Azure.
